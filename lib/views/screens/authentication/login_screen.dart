@@ -52,11 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             "Welcome Back to ${AppConstants().appName}!",
                             style: theme.textTheme.titleLarge,
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Log in to your account to continue shopping and manage your orders effortlessly.",
-                            style: theme.textTheme.bodyLarge,
-                          ),
                           const SizedBox(height: 40),
                           TextFormField(
                             controller: emailAddressController,
@@ -151,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Get.offNamed(AppRouteNames.register);
                   },
                   child: const Text(
-                    "Don't have Account? Sign up now!",
+                    "Don't have Account? Sign up here",
                   ),
                 )
               ],

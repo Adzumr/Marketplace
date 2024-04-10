@@ -180,7 +180,7 @@ class CustomerTile extends StatelessWidget {
                       style: theme.textTheme.titleLarge,
                     ),
                     subtitle: Text(
-                      "${customer.address}",
+                      "${customer.tag}",
                       style: theme.textTheme.bodyLarge,
                     ),
                   ),

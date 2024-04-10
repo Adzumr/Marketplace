@@ -1,9 +1,9 @@
 import 'package:marketplace/core/utils/extentions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../controllers/controllers/auth_controller.dart';
 import '../../../core/routing/route_names.dart';
+import '../../../core/theme/themes.dart';
 import '../../../core/utils/app_constants.dart';
 import '../../widgets/app_logo.dart';
 
@@ -20,13 +20,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailAddressController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final addressController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool? isSecure = true;
   bool? isConfirmSecure = true;
+  bool? shopkeeper = false;
   bool? isLoading = false;
-
+  String? selectedRole;
+  String? selectedTag;
+  List<DropdownMenuItem<String>> roles = const [
+    DropdownMenuItem(
+      value: 'customer',
+      child: Text('Customer'),
+    ),
+    DropdownMenuItem(
+      value: 'shopkeeper',
+      child: Text('Shopkeeper'),
+    ),
+  ];
+  List<DropdownMenuItem<String>> tags = const [
+    DropdownMenuItem(
+      value: 'tag1',
+      child: Text('Tag 1'),
+    ),
+    DropdownMenuItem(
+      value: 'tag2',
+      child: Text('Tag 2'),
+    ),
+    DropdownMenuItem(
+      value: 'tag3',
+      child: Text('Tag 3'),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -54,11 +78,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           "Join ${AppConstants().appName} Today!",
                           style: theme.textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Create your account to unlock exciting offers, track your orders, and enjoy a personalized shopping experience.",
-                          style: theme.textTheme.bodyLarge,
-                        ),
                         const SizedBox(height: 40),
                         TextFormField(
                           controller: emailAddressController,
@@ -74,9 +93,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           decoration: const InputDecoration(
                             labelText: "Email Address",
-                            prefixIcon: Icon(
-                              Icons.email_outlined,
-                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -91,59 +107,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           decoration: const InputDecoration(
                             labelText: "Full Name",
-                            prefixIcon: Icon(
-                              Icons.person_outline,
-                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        TextFormField(
-                          controller: addressController,
-                          keyboardType: TextInputType.streetAddress,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Address";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            labelText: "Address",
-                            prefixIcon: Icon(
-                              Icons.location_on_outlined,
-                            ),
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            enabledBorder: enabledInputBorder,
+                            errorBorder: errorInputBorder,
+                            disabledBorder: outlinedInputBorder,
+                            focusedBorder: enabledInputBorder,
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          controller: phoneNumberController,
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          maxLength: 11,
+                          style: theme.textTheme.bodyMedium!,
+                          items: roles,
                           onChanged: (value) {
-                            if (value.trim().length >= 11) {
-                              context.dissmissKeyboard();
-                            }
+                            setState(() {
+                              selectedRole = value;
+                            });
                           },
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return "Enter Mobile Number";
-                            }
-                            if (value.length < 11) {
-                              return "Invalid Number";
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            labelText: "Mobile Number",
-                            counterText: "",
-                            prefixIcon: Icon(
-                              Icons.phone_android_outlined,
+                          hint: Text(
+                            'Select Role',
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: theme.colorScheme.primary,
                             ),
                           ),
                         ),
                         const SizedBox(height: 16),
+                        selectedRole == "shopkeeper"
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  DropdownButtonFormField<String>(
+                                    decoration: InputDecoration(
+                                      enabledBorder: enabledInputBorder,
+                                      errorBorder: errorInputBorder,
+                                      disabledBorder: outlinedInputBorder,
+                                      focusedBorder: enabledInputBorder,
+                                    ),
+                                    items: tags,
+                                    style: theme.textTheme.bodyMedium,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedTag = value;
+                                      });
+                                    },
+                                    hint: Text(
+                                      'Select Tag',
+                                      style:
+                                          theme.textTheme.bodyMedium!.copyWith(
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
+                              )
+                            : const SizedBox.shrink(),
                         TextFormField(
                           obscureText: isSecure!,
                           controller: passwordController,
@@ -156,9 +174,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           decoration: InputDecoration(
                             labelText: "Password",
-                            prefixIcon: const Icon(
-                              Icons.lock_outline,
-                            ),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -178,80 +193,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          controller: confirmPasswordController,
-                          obscureText: isConfirmSecure!,
-                          keyboardType: TextInputType.visiblePassword,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter Confirm Password";
-                            }
-                            if (value.trim() !=
-                                passwordController.text.trim()) {
-                              return "Password do not match";
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Confirm Password",
-                            prefixIcon: const Icon(
-                              Icons.lock_outline,
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              isLoading == true
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            context.dissmissKeyboard();
+                            if (formKey.currentState!.validate()) {
+                              try {
                                 setState(() {
-                                  if (isConfirmSecure == true) {
-                                    isConfirmSecure = false;
-                                  } else {
-                                    isConfirmSecure = true;
-                                  }
+                                  isLoading = true;
                                 });
-                              },
-                              icon: Icon(
-                                isSecure! == false
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ),
+                                await authController.registerUser(
+                                  emailAddress:
+                                      emailAddressController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  fullName: fullNameController.text.trim(),
+                                  tag: "tag1",
+                                  role: selectedRole,
+                                );
+                              } finally {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            }
+                          },
+                          child: const Text(
+                            "Register",
                           ),
                         ),
-                        const SizedBox(height: 40),
-                        isLoading == true
-                            ? const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              )
-                            : ElevatedButton(
-                                onPressed: () async {
-                                  context.dissmissKeyboard();
-                                  if (formKey.currentState!.validate()) {
-                                    try {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      await authController.registerUser(
-                                        emailAddress:
-                                            emailAddressController.text.trim(),
-                                        password:
-                                            passwordController.text.trim(),
-                                        fullName:
-                                            fullNameController.text.trim(),
-                                        phoneNumber:
-                                            phoneNumberController.text.trim(),
-                                        address: addressController.text.trim(),
-                                      );
-                                    } finally {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    }
-                                  }
-                                },
-                                child: const Text(
-                                  "Register",
-                                ),
-                              ),
                         const SizedBox(height: 10),
                         TextButton(
                           onPressed: () {
@@ -263,9 +244,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         )
                       ],
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

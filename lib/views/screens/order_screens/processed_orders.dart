@@ -29,7 +29,7 @@ class _ProcessedOrdersScreenState extends State<ProcessedOrdersScreen> {
     setState(() {
       isLoading = true;
     });
-    authController.userModel!.isAdmin == true
+    authController.userModel!.role == "shopkeeper"
         ? ordersController.getOrdersStream()
         : ordersController.myOrderStream(
             customerId: authController.userModel!.id,
@@ -50,7 +50,7 @@ class _ProcessedOrdersScreenState extends State<ProcessedOrdersScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: StreamBuilder<List<MyOrderModel>>(
-              stream: authController.userModel!.isAdmin == true
+              stream: authController.userModel!.role == "shopkeeper"
                   ? ordersController.getOrdersStream()
                   : ordersController.myOrderStream(
                       customerId: authController.userModel!.id,

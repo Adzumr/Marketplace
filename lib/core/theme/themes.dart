@@ -240,3 +240,11 @@ final enabledInputBorder = OutlineInputBorder(
     width: 1,
   ),
 );
+final errorInputBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(15),
+  gapPadding: 10,
+  borderSide: BorderSide(
+    color: AppColor().error,
+    width: 1,
+  ),
+);

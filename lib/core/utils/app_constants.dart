@@ -13,7 +13,7 @@ class AppConstants {
 
   AppConstants._internal();
 
-  final String appName = "Sidi and Sons Supermarket";
+  final String appName = "Marketplace";
   final String phoneNumber = "+2348130762880";
   final String emailAddress = "adzumrjada@gmail.com";
 

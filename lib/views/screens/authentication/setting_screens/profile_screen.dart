@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         backgroundColor: theme.colorScheme.secondary,
-        leading: authController.userModel!.isAdmin != true
+        leading: authController.userModel!.role == "shopkeeper"
             ? IconButton.filledTonal(
                 onPressed: () {
                   Get.toNamed(
@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         title: Text(
-                          "${authController.userModel!.address}",
+                          "${authController.userModel!.tag}",
                           style: theme.textTheme.bodyLarge,
                         ),
                       ),

@@ -70,7 +70,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      authController.userModel!.isAdmin == true
+                      authController.userModel!.role == "shopkeeper"
                           ? const SizedBox.shrink()
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -94,7 +94,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     style: theme.textTheme.bodyLarge,
                                   ),
                                   subtitle: Text(
-                                    "${orderModel!.user!.address}",
+                                    "${orderModel!.user!.tag}",
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: theme.textTheme.titleMedium,
@@ -207,7 +207,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   ? const Center(
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : authController.userModel!.isAdmin == true
+                  : authController.userModel!.role == "shopkeeper"
                       ? ElevatedButton(
                           onPressed: () async {
                             orderModel!.orderStatus ==

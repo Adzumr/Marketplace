@@ -23,8 +23,8 @@ class AuthController extends GetxController {
     required String? emailAddress,
     required String? password,
     required String? fullName,
-    required String? phoneNumber,
-    required String? address,
+    required String? tag,
+    required String? role,
   }) async {
     try {
       // Step 0: Get device token
@@ -41,13 +41,12 @@ class AuthController extends GetxController {
       await _usersCollection.doc(userCredential.user!.uid).set(
         {
           'id': userCredential.user!.uid,
-          'isAdmin': false,
+          'role': role,
           'name': fullName,
           'email': emailAddress,
-          'phone': phoneNumber,
+          'tag': tag,
           'token': token,
           "picture": "",
-          'address': address,
         },
       );
 
@@ -222,7 +221,7 @@ class AuthController extends GetxController {
       List<UserModel> users = [];
       for (var documentSnapshot in querySnapshot.docs) {
         UserModel user = UserModel.fromJson(documentSnapshot.data());
-        if (user.isAdmin != true) {
+        if (user.role != "shopkeeper") {
           users.add(user);
         }
       }

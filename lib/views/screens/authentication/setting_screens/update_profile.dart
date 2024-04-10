@@ -21,7 +21,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     emailAddress = TextEditingController(text: authController.userModel!.email);
     fullName = TextEditingController(text: authController.userModel!.name);
     phoneNumber = TextEditingController(text: authController.userModel!.phone);
-    address = TextEditingController(text: authController.userModel!.address);
+    address = TextEditingController(text: authController.userModel!.tag);
     super.initState();
   }
 

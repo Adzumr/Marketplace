@@ -30,6 +30,7 @@ Future<void> main() async {
     const MarketplaceApp(),
   );
   NetWorkDependencyInjection.init();
+  // TODO Start working on Customer and Shopkeeper
 }
 
 SharedPreferences? sharedPreferences;

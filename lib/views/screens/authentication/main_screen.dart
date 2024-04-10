@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: <Widget>[
           /// Home page
-          authController.userModel!.isAdmin == true
+          authController.userModel!.role == "shopkeeper"
               ? const CatalogScreen()
               : const UserHomeScreen(),
 

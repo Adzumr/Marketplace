@@ -40,7 +40,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
           backgroundColor: Theme.of(context).colorScheme.background,
           actions: [
-            authController.userModel!.isAdmin != true
+            authController.userModel!.role != "shopkeeper"
                 ? IconButton.filledTonal(
                     onPressed: () {
                       Get.toNamed(

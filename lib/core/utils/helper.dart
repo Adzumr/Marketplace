@@ -8,25 +8,25 @@ class Helper {
       image: AppAssets().logo,
       title: "Welcome to ${AppConstants().appName}!",
       subtitle:
-          "Your one-stop destination for all your grocery needs. Discover a seamless shopping experience right at your fingertips",
+          "Explore a new way to connect with customers and shopkeepers seamlessly.",
     ),
     IntroductionMessage(
       image: AppAssets().logo,
-      title: "Effortless Shopping Anytime, Anywhere",
+      title: "How ${AppConstants().appName} Works",
       subtitle:
-          "Browse through our extensive catalog, add items to your cart, and place orders with ease. Shop from the comfort of your home or on-the-go, whenever it suits you.",
+          "Post your requirements, and let shopkeepers respond based on your preferences. Shopkeepers, create your profile and receive notifications for matching customer requirements.",
     ),
     IntroductionMessage(
       image: AppAssets().logo,
-      title: "Secure and Speedy Deliveries",
+      title: "Why Choose ${AppConstants().appName}?",
       subtitle:
-          "Rest assured, your orders are processed securely, and deliveries are swift. Track your orders in real-time and receive them at your doorstep hassle-free.",
+          "Find what you need, when you need it. Streamline your shopping experience and reach potential customers effortlessly.",
     ),
     IntroductionMessage(
       image: AppAssets().logo,
-      title: "Get Started and Enjoy Shopping!",
+      title: "Let's Get Started!",
       subtitle:
-          "Join our community of shoppers to unlock exclusive deals and personalized recommendations. Sign up now or log in to dive into a world of convenience.",
+          "Start connecting with customers or shopkeepers today. Register or log in to begin.",
     ),
   ];
 }

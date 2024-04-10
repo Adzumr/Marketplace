@@ -42,7 +42,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           DateTime.now().getGreeting(),
                           style: theme.textTheme.titleLarge,
                         ),
-                        authController.userModel!.isAdmin != true
+                        authController.userModel!.role != "shopkeeper"
                             ? IconButton.outlined(
                                 onPressed: () {
                                   Get.toNamed(AppRouteNames.cart);

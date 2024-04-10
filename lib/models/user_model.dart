@@ -2,41 +2,41 @@ class UserModel {
   final String? id;
   final String? token;
   final String? picture;
-  final bool? isAdmin;
+  final String? role;
   final String? name;
   final String? email;
   final String? phone;
-  final String? address;
+  final String? tag;
 
   UserModel({
     this.id,
     this.token,
     this.picture,
-    this.isAdmin,
+    this.role,
     this.name,
     this.email,
     this.phone,
-    this.address,
+    this.tag,
   });
 
   UserModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as String?,
         token = json['token'] as String?,
         picture = json['picture'] as String?,
-        isAdmin = json['isAdmin'] as bool?,
+        role = json['role'] as String?,
         name = json['name'] as String?,
         email = json['email'] as String?,
         phone = json['phone'] as String?,
-        address = json['address'] as String?;
+        tag = json['tag'] as String?;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'token': token,
         'picture': picture,
-        'isAdmin': isAdmin,
+        'role': role,
         'name': name,
         'email': email,
         'phone': phone,
-        'address': address,
+        'tag': tag,
       };
 }

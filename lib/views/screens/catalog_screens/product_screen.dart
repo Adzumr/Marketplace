@@ -128,7 +128,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   ? const Center(
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : authController.userModel!.isAdmin == true
+                  : authController.userModel!.role == "shopkeeper"
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: theme.colorScheme.error,
