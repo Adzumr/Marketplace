@@ -14,6 +14,6 @@ This Flutter app is designed to create a marketplace where customers can post th
 
 ## Technologies Used
 
-- **Flutter**: Used for building the mobile application's front end.
+- **Flutter**: Used for building the mobile application's frontend.
 - **Firebase**: Leveraged Firebase Authentication for user authentication and Firebase Firestore for storing requirement and profile data.
 - **GetX**: Implemented MVC architecture for state management and business logic organization.
