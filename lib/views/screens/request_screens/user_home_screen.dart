@@ -123,12 +123,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "${request.tag}",
+                  "${request.description}",
                   style: theme.textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "${request.description}",
+                  "${request.tag}",
                   style: theme.textTheme.bodyLarge,
                 ),
               ],

@@ -30,12 +30,7 @@ class RequestController extends GetxController {
     final credentials = await obtainAccessCredentialsViaServiceAccount(
       ServiceAccountCredentials.fromJson(
 
-          /// ServiceAccountCredentials
-          /// From Json
-          /// {
-          /// ServiceAccountCredentials Goes here
-          /// }
-
+          /// jsonn credentials goes here
           ),
       ['https://www.googleapis.com/auth/firebase.messaging'],
       Client(), // Create a new HTTP client to send requests.
