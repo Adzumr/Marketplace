@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:marketplace/core/utils/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/network/network_dependency.dart';
@@ -16,6 +18,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await NotificationServices().initNotifications();
 
   sharedPreferences = await SharedPreferences.getInstance();
 
@@ -33,6 +36,7 @@ Future<void> main() async {
 }
 
 SharedPreferences? sharedPreferences;
+FirebaseAuth? firebaseAuth;
 
 class MarketplaceApp extends StatelessWidget {
   const MarketplaceApp({super.key});
