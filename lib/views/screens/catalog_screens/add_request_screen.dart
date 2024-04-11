@@ -181,6 +181,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                               if (selectedTag != null) {
                                 await controller.addRequest(
                                   request: product,
+                                  token: authController.userModel!.token,
                                 );
                               } else {
                                 Get.snackbar(

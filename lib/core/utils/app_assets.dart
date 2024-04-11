@@ -9,5 +9,6 @@ class AppAssets {
 
   AppAssets._internal();
   final String noNetworkAnim = "assets/network.json";
+  final String serviceAccount = "assets/service_account.json";
   final String logo = "assets/logo.png";
 }

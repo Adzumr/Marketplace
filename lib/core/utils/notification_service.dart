@@ -8,8 +8,9 @@ class NotificationServices {
 
   NotificationServices() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = const AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
@@ -40,9 +41,9 @@ class NotificationServices {
       android: androidPlatformChannelSpecifics,
     );
     await flutterLocalNotificationsPlugin.show(
-      0, // Notification ID
-      message.notification?.title, // Notification Title
-      message.notification?.body, // Notification Body
+      0,
+      message.notification?.title,
+      message.notification?.body,
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );

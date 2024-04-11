@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:marketplace/controllers/controllers/auth_controller.dart';
 import 'package:marketplace/controllers/controllers/request_controller.dart';
 import 'package:marketplace/core/utils/extentions.dart';
@@ -76,11 +77,18 @@ class _ShopkeeperHomeScreenState extends State<ShopkeeperHomeScreen> {
                                 final request = requests[index];
                                 return RequestTile(
                                   request: request,
-                                  onPressed: () {
-                                    // showRequestionDetail(
-                                    //   context,
-                                    //   request,
-                                    // );
+                                  onPressed: () async {
+                                    try {
+                                      await FirebaseMessaging.instance
+                                          .subscribeToTopic("${request.tag}")
+                                          .then((value) {
+                                        debugPrint(
+                                          "Status: Success!!!",
+                                        );
+                                      });
+                                    } on Exception catch (e) {
+                                      debugPrint("Error: $e");
+                                    }
                                   },
                                 );
                               },

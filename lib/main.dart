@@ -21,6 +21,7 @@ Future<void> main() async {
   await NotificationServices().initNotifications();
 
   sharedPreferences = await SharedPreferences.getInstance();
+  firebaseAuth = FirebaseAuth.instance;
 
   SystemChrome.setPreferredOrientations(
     [
