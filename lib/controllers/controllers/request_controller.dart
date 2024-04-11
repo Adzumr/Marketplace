@@ -55,12 +55,12 @@ class RequestController extends GetxController {
       "message": {
         "token": token,
         "notification": {
-          "title": "New Matching Requirement",
-          "body": "A new requirement matching your tags has been posted",
+          "title": "New Requirement",
+          "body": "A new requirement matching your tag has been posted",
         },
         "data": {
-          "title": "New Matching Requirement",
-          "body": "A new requirement matching your tags has been posted",
+          "title": "New Requirement",
+          "body": "A new requirement matching your tag has been posted",
         },
       }
     };
@@ -82,7 +82,7 @@ class RequestController extends GetxController {
 
   Future addRequest({
     required RequestModel? request,
-    required String? token,
+    required List<String>? tokens,
   }) async {
     // Use the same DocumentReference for both adding the stylist and getting the ID
     DocumentReference documentRef = _requestCollection.doc();
@@ -93,8 +93,10 @@ class RequestController extends GetxController {
       ...request.toJson(),
     }).then(
       (value) async {
-        await sendNotification(token: token);
         getRequestsStream();
+        for (var token in tokens!) {
+          await sendNotification(token: token);
+        }
       },
     );
     Get.back();

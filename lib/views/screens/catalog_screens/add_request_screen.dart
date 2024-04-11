@@ -166,34 +166,9 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       )
                     : ElevatedButton(
                         onPressed: () async {
-                          context.dissmissKeyboard();
                           if (formKey.currentState!.validate()) {
-                            try {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              final product = RequestModel(
-                                tag: selectedTag,
-                                customerId: authController.userModel!.id,
-                                description: description.text.trim(),
-                                name: name.text.trim(),
-                              );
-                              if (selectedTag != null) {
-                                await controller.addRequest(
-                                  request: product,
-                                  token: authController.userModel!.token,
-                                );
-                              } else {
-                                Get.snackbar(
-                                  "Choose Tag",
-                                  "Select Tag before submitting Tag",
-                                );
-                              }
-                            } finally {
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
+                            context.dissmissKeyboard();
+                            await createRequest();
                           }
                         },
                         child: const Text(
@@ -207,5 +182,44 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> createRequest() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final product = RequestModel(
+        tag: selectedTag,
+        customerId: authController.userModel!.id,
+        description: description.text.trim(),
+        name: name.text.trim(),
+      );
+      List<String> tokens = [];
+      await for (final users in authController.getUsersStream()) {
+        tokens = users
+            .where((user) => user.tag == selectedTag)
+            .map((user) => user.token)
+            .cast<String>()
+            .toList();
+        break;
+      }
+
+      if (selectedTag != null) {
+        await controller.addRequest(
+          request: product,
+          tokens: tokens,
+        );
+      } else {
+        Get.snackbar(
+          "Choose Tag",
+          "Select Tag before submitting Tag",
+        );
+      }
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }

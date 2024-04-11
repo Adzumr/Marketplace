@@ -40,7 +40,7 @@ class _ShopkeeperHomeScreenState extends State<ShopkeeperHomeScreen> {
               ),
               const SizedBox(height: 32),
               Text(
-                "Customer Requests",
+                "Requests",
                 style: theme.textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),

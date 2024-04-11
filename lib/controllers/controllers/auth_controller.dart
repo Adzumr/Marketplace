@@ -176,9 +176,7 @@ class AuthController extends GetxController {
       List<UserModel> users = [];
       for (var documentSnapshot in querySnapshot.docs) {
         UserModel user = UserModel.fromJson(documentSnapshot.data());
-        if (user.role != "shopkeeper") {
-          users.add(user);
-        }
+        users.add(user);
       }
       return users;
     });
