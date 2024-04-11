@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:marketplace/controllers/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplace/core/utils/enums.dart';
 
 import '../../../../core/routing/route_names.dart';
 
@@ -14,6 +14,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -21,18 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         backgroundColor: theme.colorScheme.secondary,
-        leading: authController.userModel!.role == "shopkeeper"
-            ? IconButton.filledTonal(
-                onPressed: () {
-                  Get.toNamed(
-                    AppRouteNames.cart,
-                  );
-                },
-                icon: const Icon(
-                  Icons.shopping_cart,
-                ),
-              )
-            : const SizedBox.shrink(),
+        leading: const SizedBox.shrink(),
         centerTitle: true,
         actions: [
           IconButton.filled(
@@ -92,22 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: CachedNetworkImage(
-                          imageUrl: authController.userModel!.picture ?? "",
-                          height: 200,
-                          fit: BoxFit.fill,
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.account_circle_outlined,
-                            size: 150,
-                          ),
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       ListTile(
                         leading: CircleAvatar(
                           backgroundColor: theme.colorScheme.secondary,
@@ -120,18 +94,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: theme.textTheme.bodyLarge,
                         ),
                       ),
-                      ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: theme.colorScheme.secondary,
-                          child: const Icon(
-                            Icons.location_on,
-                          ),
-                        ),
-                        title: Text(
-                          "${authController.userModel!.tag}",
-                          style: theme.textTheme.bodyLarge,
-                        ),
-                      ),
+                      authController.userModel!.role == Roles.shopkeeper.name
+                          ? ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: theme.colorScheme.secondary,
+                                child: const Icon(
+                                  Icons.security_outlined,
+                                ),
+                              ),
+                              title: Text(
+                                "${authController.userModel!.tag}",
+                                style: theme.textTheme.bodyLarge,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       ListTile(
                         leading: CircleAvatar(
                           backgroundColor: theme.colorScheme.secondary,
@@ -148,11 +124,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         leading: CircleAvatar(
                           backgroundColor: theme.colorScheme.secondary,
                           child: const Icon(
-                            Icons.phone_android,
+                            Icons.account_box_outlined,
                           ),
                         ),
                         title: Text(
-                          "${authController.userModel!.phone}",
+                          "${authController.userModel!.role}".capitalizeFirst!,
                           style: theme.textTheme.bodyLarge,
                         ),
                       ),

@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../core/routing/route_names.dart';
 import '../../core/utils/app_constants.dart';
@@ -46,7 +43,6 @@ class AuthController extends GetxController {
           'email': emailAddress,
           'tag': tag,
           'token': token,
-          "picture": "",
         },
       );
 
@@ -131,58 +127,17 @@ class AuthController extends GetxController {
 
   Future<UserModel?> updateUser({
     required String? name,
-    required String? phone,
-    required String? address,
-    XFile? imageFile,
+    required String? tag,
   }) async {
     try {
       // Step 0: Get device token
       final token = await FirebaseMessaging.instance.getToken();
 
-      // Step 2: Fetch current user data
-      DocumentSnapshot userSnapshot =
-          await _usersCollection.doc(userModel!.id).get();
-      Map<String, dynamic>? currentUserData =
-          userSnapshot.data() as Map<String, dynamic>?;
-
-      // Step 3: Check if there's an existing profile picture URL
-      String? previousImageUrl = currentUserData?['picture'];
-
-      // Step 4: Upload new image
-      String? newImageUrl;
-      if (imageFile != null) {
-        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-        Reference fileReference = storageReference.child('users/$fileName');
-
-        TaskSnapshot uploadTask = await fileReference
-            .putFile(
-              File(imageFile.path),
-            )
-            .timeout(
-              const Duration(seconds: 10),
-            );
-
-        newImageUrl = await uploadTask.ref.getDownloadURL();
-        debugPrint("New Image URL: $newImageUrl");
-      }
-
-      // Step 5: If there's an existing profile picture, delete it
-      if (previousImageUrl != null) {
-        try {
-          await FirebaseStorage.instance.refFromURL(previousImageUrl).delete();
-          debugPrint("Previous Image deleted successfully");
-        } catch (e) {
-          debugPrint("Error deleting previous image: $e");
-        }
-      }
-
-      // Step 6: Update user in Firestore with new data
+      // Step 1: Update user in Firestore with new data
       await _usersCollection.doc(userModel!.id!).update({
         'token': token,
         'name': name,
-        'phone': phone,
-        'address': address,
-        'picture': newImageUrl ?? previousImageUrl,
+        'tag': tag ?? "",
       });
 
       // Step 7: Retrieve updated user data from Firestore

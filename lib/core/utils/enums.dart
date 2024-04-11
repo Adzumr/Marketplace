@@ -1,11 +1,10 @@
-enum OrderStatus {
-  unprocessed,
-  rejected,
-  accepted,
-  completed,
+enum Tags {
+  tag1,
+  tag2,
+  tag3,
 }
 
-enum PaymentStatus {
-  notPaid,
-  paid,
+enum Roles {
+  customer,
+  shopkeeper,
 }

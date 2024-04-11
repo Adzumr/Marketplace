@@ -1,23 +1,17 @@
 import 'package:marketplace/controllers/bindings/cart_binding.dart';
 import 'package:marketplace/controllers/bindings/order_binding.dart';
 import 'package:marketplace/views/screens/catalog_screens/add_product_screen.dart';
-import 'package:marketplace/views/screens/catalog_screens/catalog_screen.dart';
 import 'package:marketplace/views/screens/catalog_screens/customers_screen.dart';
 import 'package:marketplace/views/screens/catalog_screens/product_screen.dart';
 import 'package:marketplace/views/screens/catalog_screens/user_home_screen.dart';
-import 'package:marketplace/views/screens/order_screens/processed_orders.dart';
-import 'package:marketplace/views/screens/order_screens/unprocessed_orders.dart';
-import 'package:marketplace/views/screens/cart/cart_screen.dart';
-import 'package:marketplace/views/screens/order_screens/orders_screen.dart';
-import 'package:marketplace/views/screens/order_screens/completed_orders.dart';
-import 'package:marketplace/views/screens/order_screens/order_detail.dart';
 import 'package:marketplace/views/screens/authentication/setting_screens/profile_screen.dart';
 import 'package:marketplace/views/screens/authentication/setting_screens/update_profile.dart';
 import 'package:marketplace/views/screens/authentication/main_screen.dart';
-import 'package:marketplace/views/screens/authentication/register_screen.dart';
+import 'package:marketplace/views/screens/authentication/register_customer_screen.dart';
 import 'package:get/get.dart';
 import '../../controllers/bindings/auth_binding.dart';
 import '../../controllers/bindings/dish_binding.dart';
+import '../../views/screens/authentication/register_shopkeer__screen.dart';
 import '../../views/screens/catalog_screens/products_screen.dart';
 import '../../views/screens/authentication/intro_screen.dart';
 import '../../views/screens/authentication/login_screen.dart';
@@ -57,7 +51,15 @@ class AppRoutesConfiguration {
       opaque: true,
       name: '/${AppRouteNames.register}',
       binding: AuthBinding(),
-      page: () => const RegisterScreen(),
+      page: () => const RegisterCustomerScreen(),
+    ),
+    GetPage(
+      fullscreenDialog: true,
+      participatesInRootNavigator: true,
+      opaque: true,
+      name: '/${AppRouteNames.registerShopkeer}',
+      binding: AuthBinding(),
+      page: () => const RegisterShopkeerScreen(),
     ),
     GetPage(
       fullscreenDialog: true,
@@ -108,18 +110,6 @@ class AppRoutesConfiguration {
       fullscreenDialog: true,
       participatesInRootNavigator: true,
       opaque: true,
-      name: '/${AppRouteNames.catalog}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        CartBinding(),
-      ],
-      page: () => const CatalogScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
       name: '/${AppRouteNames.customers}',
       bindings: [
         AuthBinding(),
@@ -151,79 +141,6 @@ class AppRoutesConfiguration {
         CartBinding(),
       ],
       page: () => const ProductsScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.acceptedOrders}',
-      bindings: [
-        AuthBinding(),
-        CartBinding(),
-      ],
-      page: () => const ProcessedOrdersScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.completedOrders}',
-      bindings: [
-        AuthBinding(),
-        CartBinding(),
-      ],
-      page: () => const CompletedOrdersScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.orders}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        OrderBinding(),
-        CartBinding(),
-      ],
-      page: () => const OrdersScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.allOrders}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        OrderBinding(),
-        CartBinding(),
-      ],
-      page: () => const UnprocessedOrdersScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.order}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        OrderBinding(),
-        CartBinding(),
-      ],
-      page: () => const OrderScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.cart}',
-      bindings: [
-        AuthBinding(),
-        CartBinding(),
-        OrderBinding(),
-      ],
-      page: () => const CartScreen(),
     ),
     GetPage(
       fullscreenDialog: true,

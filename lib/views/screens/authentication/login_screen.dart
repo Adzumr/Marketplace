@@ -45,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const AppLogo(
-                            height: 150,
+                            height: 100,
                           ),
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 16),
                           Text(
                             "Welcome Back to ${AppConstants().appName}!",
                             style: theme.textTheme.titleLarge,
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                           TextFormField(
                             controller: emailAddressController,
                             keyboardType: TextInputType.emailAddress,

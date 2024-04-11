@@ -1,3 +1,5 @@
+import 'package:marketplace/core/theme/colors.dart';
+import 'package:marketplace/core/utils/enums.dart';
 import 'package:marketplace/core/utils/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,14 +9,14 @@ import '../../../core/theme/themes.dart';
 import '../../../core/utils/app_constants.dart';
 import '../../widgets/app_logo.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterShopkeerScreen extends StatefulWidget {
+  const RegisterShopkeerScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterShopkeerScreen> createState() => _RegisterShopkeerScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterShopkeerScreenState extends State<RegisterShopkeerScreen> {
   final authController = Get.find<AuthController>();
   final fullNameController = TextEditingController();
   final emailAddressController = TextEditingController();
@@ -25,32 +27,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool? isConfirmSecure = true;
   bool? shopkeeper = false;
   bool? isLoading = false;
-  String? selectedRole;
   String? selectedTag;
-  List<DropdownMenuItem<String>> roles = const [
-    DropdownMenuItem(
-      value: 'customer',
-      child: Text('Customer'),
-    ),
-    DropdownMenuItem(
-      value: 'shopkeeper',
-      child: Text('Shopkeeper'),
-    ),
-  ];
-  List<DropdownMenuItem<String>> tags = const [
+  List<DropdownMenuItem<String>> tags = [
     DropdownMenuItem(
       value: 'tag1',
-      child: Text('Tag 1'),
+      child: Row(
+        children: [
+          Icon(
+            Icons.security_outlined,
+            color: AppColor().primary,
+          ),
+          const SizedBox(width: 16),
+          const Text('Tag 1'),
+        ],
+      ),
     ),
     DropdownMenuItem(
       value: 'tag2',
-      child: Text('Tag 2'),
+      child: Row(
+        children: [
+          Icon(
+            Icons.security_outlined,
+            color: AppColor().primary,
+          ),
+          const SizedBox(width: 16),
+          const Text('Tag 2'),
+        ],
+      ),
     ),
     DropdownMenuItem(
       value: 'tag3',
-      child: Text('Tag 3'),
+      child: Row(
+        children: [
+          Icon(
+            Icons.security_outlined,
+            color: AppColor().primary,
+          ),
+          const SizedBox(width: 16),
+          const Text('Tag 3'),
+        ],
+      ),
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -71,14 +90,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const AppLogo(
-                          height: 150,
+                          height: 100,
                         ),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 16),
                         Text(
-                          "Join ${AppConstants().appName} Today!",
+                          "Join ${AppConstants().appName} Today as Shopkeeper",
                           style: theme.textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
                         TextFormField(
                           controller: emailAddressController,
                           keyboardType: TextInputType.emailAddress,
@@ -117,51 +136,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             disabledBorder: outlinedInputBorder,
                             focusedBorder: enabledInputBorder,
                           ),
-                          style: theme.textTheme.bodyMedium!,
-                          items: roles,
+                          items: tags,
+                          style: theme.textTheme.bodyMedium,
                           onChanged: (value) {
                             setState(() {
-                              selectedRole = value;
+                              selectedTag = value;
                             });
                           },
-                          hint: Text(
-                            'Select Role',
-                            style: theme.textTheme.bodyMedium!.copyWith(
-                              color: theme.colorScheme.primary,
-                            ),
+                          hint: Row(
+                            children: [
+                              Icon(
+                                Icons.security_outlined,
+                                color: theme.colorScheme.primary,
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                'Select Tag',
+                                style: theme.textTheme.bodyMedium!.copyWith(
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 16),
-                        selectedRole == "shopkeeper"
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  DropdownButtonFormField<String>(
-                                    decoration: InputDecoration(
-                                      enabledBorder: enabledInputBorder,
-                                      errorBorder: errorInputBorder,
-                                      disabledBorder: outlinedInputBorder,
-                                      focusedBorder: enabledInputBorder,
-                                    ),
-                                    items: tags,
-                                    style: theme.textTheme.bodyMedium,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedTag = value;
-                                      });
-                                    },
-                                    hint: Text(
-                                      'Select Tag',
-                                      style:
-                                          theme.textTheme.bodyMedium!.copyWith(
-                                        color: theme.colorScheme.primary,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                ],
-                              )
-                            : const SizedBox.shrink(),
                         TextFormField(
                           obscureText: isSecure!,
                           controller: passwordController,
@@ -174,6 +172,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           decoration: InputDecoration(
                             labelText: "Password",
+                            prefixIcon: const Icon(
+                              Icons.lock_outline,
+                            ),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -190,6 +191,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     : Icons.visibility,
                                 color: theme.colorScheme.primary,
                               ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: confirmPasswordController,
+                          obscureText: isConfirmSecure!,
+                          keyboardType: TextInputType.visiblePassword,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Enter Confirm Password";
+                            }
+                            if (value.trim() !=
+                                passwordController.text.trim()) {
+                              return "Password do not match";
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            labelText: "Confirm Password",
+                            prefixIcon: const Icon(
+                              Icons.lock_outline,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (isConfirmSecure == true) {
+                                    isConfirmSecure = false;
+                                  } else {
+                                    isConfirmSecure = true;
+                                  }
+                                });
+                              },
+                              icon: Icon(
+                                isSecure! == false
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.offAllNamed(AppRouteNames.register);
+                            },
+                            child: const Text(
+                              "Register as Customer",
                             ),
                           ),
                         ),
@@ -219,8 +276,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       emailAddressController.text.trim(),
                                   password: passwordController.text.trim(),
                                   fullName: fullNameController.text.trim(),
-                                  tag: "tag1",
-                                  role: selectedRole,
+                                  tag: selectedTag,
+                                  role: Roles.shopkeeper.name,
                                 );
                               } finally {
                                 setState(() {

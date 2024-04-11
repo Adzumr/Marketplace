@@ -4,6 +4,7 @@ class AppRouteNames {
   static const String noNetwork = "no-network";
   static const String login = "login";
   static const String register = "register";
+  static const String registerShopkeer = "register-shopkeeper";
   static const String main = "main";
   static const String profile = "profile";
   static const String updateProfile = "update-profile";
