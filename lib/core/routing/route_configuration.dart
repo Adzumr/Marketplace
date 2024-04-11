@@ -1,8 +1,3 @@
-import 'package:marketplace/controllers/bindings/cart_binding.dart';
-import 'package:marketplace/controllers/bindings/order_binding.dart';
-import 'package:marketplace/views/screens/catalog_screens/add_product_screen.dart';
-import 'package:marketplace/views/screens/catalog_screens/customers_screen.dart';
-import 'package:marketplace/views/screens/catalog_screens/product_screen.dart';
 import 'package:marketplace/views/screens/catalog_screens/user_home_screen.dart';
 import 'package:marketplace/views/screens/authentication/setting_screens/profile_screen.dart';
 import 'package:marketplace/views/screens/authentication/setting_screens/update_profile.dart';
@@ -10,12 +5,13 @@ import 'package:marketplace/views/screens/authentication/main_screen.dart';
 import 'package:marketplace/views/screens/authentication/register_customer_screen.dart';
 import 'package:get/get.dart';
 import '../../controllers/bindings/auth_binding.dart';
-import '../../controllers/bindings/dish_binding.dart';
+import '../../controllers/bindings/request_binding.dart';
 import '../../views/screens/authentication/register_shopkeer__screen.dart';
-import '../../views/screens/catalog_screens/products_screen.dart';
 import '../../views/screens/authentication/intro_screen.dart';
 import '../../views/screens/authentication/login_screen.dart';
 import '../../views/screens/authentication/no_network_screen.dart';
+import '../../views/screens/catalog_screens/add_request_screen.dart';
+import '../../views/screens/catalog_screens/shopkeeper_home_screen.dart';
 import 'route_names.dart';
 
 class AppRoutesConfiguration {
@@ -68,7 +64,6 @@ class AppRoutesConfiguration {
       name: '/${AppRouteNames.main}',
       bindings: [
         AuthBinding(),
-        CartBinding(),
       ],
       page: () => const MainScreen(),
     ),
@@ -80,7 +75,6 @@ class AppRoutesConfiguration {
       name: '/${AppRouteNames.profile}',
       bindings: [
         AuthBinding(),
-        CartBinding(),
       ],
       page: () => const ProfileScreen(),
     ),
@@ -92,67 +86,38 @@ class AppRoutesConfiguration {
       binding: AuthBinding(),
       page: () => const UpdateProfileScreen(),
     ),
-
-    /// Admin Pages
     GetPage(
       fullscreenDialog: true,
       participatesInRootNavigator: true,
       opaque: true,
-      name: '/${AppRouteNames.addProduct}',
+      name: '/${AppRouteNames.homeCustomer}',
       bindings: [
         AuthBinding(),
-        DishBinding(),
-        CartBinding(),
-      ],
-      page: () => const AddProductScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.customers}',
-      bindings: [
-        AuthBinding(),
-        CartBinding(),
-      ],
-      page: () => const CustomersScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.product}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        OrderBinding(),
-        CartBinding(),
-      ],
-      page: () => const ProductScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.products}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        CartBinding(),
-      ],
-      page: () => const ProductsScreen(),
-    ),
-    GetPage(
-      fullscreenDialog: true,
-      participatesInRootNavigator: true,
-      opaque: true,
-      name: '/${AppRouteNames.home}',
-      bindings: [
-        AuthBinding(),
-        DishBinding(),
-        CartBinding(),
+        RequestBinding(),
       ],
       page: () => const UserHomeScreen(),
+    ),
+    GetPage(
+      fullscreenDialog: true,
+      participatesInRootNavigator: true,
+      opaque: true,
+      name: '/${AppRouteNames.addRequest}',
+      bindings: [
+        AuthBinding(),
+        RequestBinding(),
+      ],
+      page: () => const AddRequestScreen(),
+    ),
+    GetPage(
+      fullscreenDialog: true,
+      participatesInRootNavigator: true,
+      opaque: true,
+      name: '/${AppRouteNames.homeShopkeeper}',
+      bindings: [
+        AuthBinding(),
+        RequestBinding(),
+      ],
+      page: () => const ShopkeeperHomeScreen(),
     ),
   ];
 }

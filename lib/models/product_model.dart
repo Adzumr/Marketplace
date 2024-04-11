@@ -1,30 +1,30 @@
-class ProductModel {
+class RequestModel {
   String? id;
   final String? name;
-  final String? picture;
-  final double? price;
+  final String? tag;
   final String? description;
+  final String? customerId;
 
-  ProductModel({
+  RequestModel({
     this.id,
     required this.name,
-    this.picture,
-    required this.price,
+    required this.tag,
     required this.description,
+    required this.customerId,
   });
 
-  ProductModel.fromJson(Map<String, dynamic> json)
+  RequestModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as String?,
         name = json['name'] as String?,
-        picture = json['picture'] as String?,
-        price = json['price'] as double?,
-        description = json['description'] as String?;
+        tag = json['tag'] as String?,
+        description = json['description'] as String?,
+        customerId = json['customer_id'] as String?;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'picture': picture,
-        'price': price,
+        'tag': tag,
         'description': description,
+        'customer_id': customerId,
       };
 }

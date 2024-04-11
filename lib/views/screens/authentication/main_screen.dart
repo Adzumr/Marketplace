@@ -1,3 +1,5 @@
+import 'package:marketplace/core/utils/enums.dart';
+import 'package:marketplace/views/screens/catalog_screens/shopkeeper_home_screen.dart';
 import 'package:marketplace/views/screens/catalog_screens/user_home_screen.dart';
 import 'package:marketplace/views/screens/authentication/setting_screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +58,9 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: <Widget>[
           /// Home page
-          const UserHomeScreen(),
+          authController.userModel!.role == Roles.shopkeeper.name
+              ? const ShopkeeperHomeScreen()
+              : const UserHomeScreen(),
 
           /// Profile page
           const ProfileScreen(),

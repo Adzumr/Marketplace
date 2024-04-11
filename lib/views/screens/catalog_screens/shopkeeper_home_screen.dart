@@ -4,32 +4,23 @@ import 'package:marketplace/core/utils/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/routing/route_names.dart';
 import '../../../models/product_model.dart';
 import '../../widgets/request_tile.dart';
 
-class UserHomeScreen extends StatefulWidget {
-  const UserHomeScreen({super.key});
+class ShopkeeperHomeScreen extends StatefulWidget {
+  const ShopkeeperHomeScreen({super.key});
 
   @override
-  State<UserHomeScreen> createState() => _UserHomeScreenState();
+  State<ShopkeeperHomeScreen> createState() => _ShopkeeperHomeScreenState();
 }
 
-class _UserHomeScreenState extends State<UserHomeScreen> {
+class _ShopkeeperHomeScreenState extends State<ShopkeeperHomeScreen> {
   final authController = Get.find<AuthController>();
   final requestController = Get.put(RequestController());
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.add,
-        ),
-        onPressed: () {
-          Get.toNamed(AppRouteNames.addRequest);
-        },
-      ),
       backgroundColor: theme.colorScheme.background,
       body: SafeArea(
         child: Padding(
@@ -48,7 +39,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               ),
               const SizedBox(height: 32),
               Text(
-                "My Requests",
+                "Customer Requests",
                 style: theme.textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
@@ -67,7 +58,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       List<RequestModel> orders = snapshot.data ?? [];
                       List<RequestModel> requests = [];
                       for (var order in orders) {
-                        if (order.customerId == authController.userModel!.id) {
+                        if (order.tag == authController.userModel!.tag) {
                           requests.add(order);
                         }
                       }
@@ -86,10 +77,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 return RequestTile(
                                   request: request,
                                   onPressed: () {
-                                    showRequestionDetail(
-                                      context,
-                                      request,
-                                    );
+                                    // showRequestionDetail(
+                                    //   context,
+                                    //   request,
+                                    // );
                                   },
                                 );
                               },
@@ -103,47 +94,5 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         ),
       ),
     );
-  }
-
-  Future<dynamic> showRequestionDetail(
-    BuildContext context,
-    RequestModel request,
-  ) {
-    final theme = Theme.of(context);
-    return showAdaptiveDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog.adaptive(
-            title: Text(
-              "${request.name}",
-              style: theme.textTheme.titleLarge,
-            ),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "${request.tag}",
-                  style: theme.textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "${request.description}",
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: const Text(
-                  "Close",
-                ),
-              ),
-            ],
-          );
-        });
   }
 }
