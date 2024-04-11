@@ -1,9 +1,11 @@
 import 'package:marketplace/controllers/controllers/auth_controller.dart';
 import 'package:marketplace/controllers/controllers/request_controller.dart';
+import 'package:marketplace/core/utils/enums.dart';
 import 'package:marketplace/core/utils/extentions.dart';
 import 'package:marketplace/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketplace/models/user_model.dart';
 
 import '../../../core/theme/colors.dart';
 import '../../../core/theme/themes.dart';
@@ -21,8 +23,26 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   final controller = Get.find<RequestController>();
   final authController = Get.find<AuthController>();
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    getUsers();
+  }
+
+  List<UserModel> users = [];
+  getUsers() async {
+    users.clear();
+    users = await authController.getUsers();
+    for (var user in users) {
+      if (user.role == Roles.shopkeeper.name && user.tag == selectedTag) {
+        debugPrint("Token: ${user.token}");
+      }
+    }
+  }
+
   bool? isLoading = false;
-  String? selectedTag;
+  String? selectedTag = "tag1";
   List<DropdownMenuItem<String>> tags = [
     DropdownMenuItem(
       value: 'tag1',
@@ -79,10 +99,15 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 20),
-                Text(
-                  "Add Request",
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleLarge,
+                InkWell(
+                  onTap: () {
+                    getUsers();
+                  },
+                  child: Text(
+                    "Add Request",
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleLarge,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Expanded(
@@ -134,10 +159,12 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           ),
                           items: tags,
                           style: theme.textTheme.bodyMedium,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             setState(() {
                               selectedTag = value;
+                              debugPrint("Tag: $value");
                             });
+                            await getUsers();
                           },
                           hint: Row(
                             children: [
@@ -195,21 +222,19 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         description: description.text.trim(),
         name: name.text.trim(),
       );
-      List<String> tokens = [];
-      await for (final users in authController.getUsersStream()) {
-        tokens = users
-            .where((user) => user.tag == selectedTag)
-            .map((user) => user.token)
-            .cast<String>()
-            .toList();
-        break;
-      }
 
       if (selectedTag != null) {
         await controller.addRequest(
           request: product,
-          tokens: tokens,
         );
+        for (var user in users) {
+          if (user.role == Roles.shopkeeper.name && user.tag == selectedTag) {
+            debugPrint("Token: ${user.token}");
+            await controller.sendNotification(
+              token: user.token!,
+            );
+          }
+        }
       } else {
         Get.snackbar(
           "Choose Tag",
@@ -219,6 +244,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
     } finally {
       setState(() {
         isLoading = false;
+        Get.back();
       });
     }
   }

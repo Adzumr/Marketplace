@@ -4,8 +4,8 @@ import 'package:marketplace/core/utils/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/theme/colors.dart';
-import '../../../../core/theme/themes.dart';
+import '../../../core/theme/colors.dart';
+import '../../../core/theme/themes.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:marketplace/core/utils/enums.dart';
-import 'package:marketplace/views/screens/catalog_screens/shopkeeper_home_screen.dart';
-import 'package:marketplace/views/screens/catalog_screens/user_home_screen.dart';
-import 'package:marketplace/views/screens/authentication/setting_screens/profile_screen.dart';
+import 'package:marketplace/views/screens/request_screens/shopkeeper_home_screen.dart';
+import 'package:marketplace/views/screens/request_screens/user_home_screen.dart';
+import 'package:marketplace/views/screens/profile_screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/controllers/auth_controller.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketplace/core/utils/enums.dart';
 
-import '../../../../core/routing/route_names.dart';
+import '../../../core/routing/route_names.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

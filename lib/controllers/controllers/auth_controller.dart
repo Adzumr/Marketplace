@@ -16,11 +16,32 @@ class AuthController extends GetxController {
   final _usersCollection = FirebaseFirestore.instance.collection('users');
 
   UserModel? userModel;
+
+  /// Registers a new user with Firebase Authentication and Firestore.
+  ///
+  /// This function performs the following steps:
+  /// 1. Retrieves a device token using FirebaseMessaging.
+  /// 2. Create user with email and password
+  /// 3. Store additional user data in Firestore
+  /// 4. Retrieve user data from Firestore
+  /// 5. Creates a `UserModel` object from the retrieved data and returns it.
+  ///
+  /// Throws an exception if an error occurs during the registration process.
+  ///
   Future<UserModel?> registerUser({
+    /// The user's email address.
     required String? emailAddress,
+
+    /// The user's password.
     required String? password,
+
+    /// The user's full name.
     required String? fullName,
+
+    /// The user's tag (optional).
     required String? tag,
+
+    /// The user's role (e.g., "admin", "user").
     required String? role,
   }) async {
     try {
@@ -35,16 +56,14 @@ class AuthController extends GetxController {
       );
 
       // Step 2: Store additional user data in Firestore
-      await _usersCollection.doc(userCredential.user!.uid).set(
-        {
-          'id': userCredential.user!.uid,
-          'role': role,
-          'name': fullName,
-          'email': emailAddress,
-          'tag': tag,
-          'token': token,
-        },
-      );
+      await _usersCollection.doc(userCredential.user!.uid).set({
+        'id': userCredential.user!.uid,
+        'role': role,
+        'name': fullName,
+        'email': emailAddress,
+        'tag': tag,
+        'token': token,
+      });
 
       // Step 3: Retrieve user data from Firestore
       DocumentSnapshot userSnapshot =
@@ -54,9 +73,8 @@ class AuthController extends GetxController {
 
       // Step 4: Create a User model and return it
       if (userData != null) {
-        userModel = UserModel.fromJson(userData);
-        debugPrint("Phone: ${userModel!.phone}");
-        debugPrint("Token: ${userModel!.token}");
+        final userModel = UserModel.fromJson(userData);
+        debugPrint("Token: ${userModel.token}");
         await sharedPreferences!.setBool("skipIntro", true);
         Get.toNamed(AppRouteNames.main);
       }
@@ -74,6 +92,17 @@ class AuthController extends GetxController {
     return userModel;
   }
 
+  /// Attempts to login a user with a given email and password.
+  ///
+  /// This function performs the following steps:
+  /// 1. Retrieves a device token using FirebaseMessaging.
+  /// 2. Signs in the user with email and password using FirebaseAuth.
+  /// 3. Updates the device token for the user in Firestore.
+  /// 4. Retrieves the user data from Firestore based on the logged-in user ID.
+  /// 5. Creates a `UserModel` object from the retrieved data and returns it.
+  ///
+  /// Throws an exception if an error occurs during the login process.
+  ///
   Future<UserModel?> loginUser({
     required String? email,
     required String? password,
@@ -102,7 +131,6 @@ class AuthController extends GetxController {
       // Step 4: Create a User model and return it
       if (userData != null) {
         userModel = UserModel.fromJson(userData);
-        debugPrint("Phone: ${userModel!.phone}");
         debugPrint("Token: ${userModel!.token}");
         await sharedPreferences!.setBool("skipIntro", true);
         Get.toNamed(AppRouteNames.main);
@@ -125,8 +153,21 @@ class AuthController extends GetxController {
     return userModel;
   }
 
+  /// Updates a user's information in Firestore and retrieves the updated data.
+  ///
+  /// This function performs the following steps:
+  /// 1. Get device token
+  /// 2. Update user in Firestore with new data
+  /// 3. Retrieve updated user data from Firestore
+  /// 4. Create a User model and return it
+  ///
+  /// Throws an exception if an error occurs during the login process.
+  ///
   Future<UserModel?> updateUser({
+    /// The user's new name. Can be null if not updating.
     required String? name,
+
+    /// The user's new tag. Can be null if not updating.
     required String? tag,
   }) async {
     try {
@@ -140,13 +181,13 @@ class AuthController extends GetxController {
         'tag': tag ?? "",
       });
 
-      // Step 7: Retrieve updated user data from Firestore
+      // Step 2: Retrieve updated user data from Firestore
       DocumentSnapshot updatedUserSnapshot =
           await _usersCollection.doc(userModel!.id).get();
       Map<String, dynamic>? updatedUserData =
           updatedUserSnapshot.data() as Map<String, dynamic>?;
 
-      // Step 8: Create a User model and return it
+      // Step 3: Create a User model and return it
       if (updatedUserData != null) {
         userModel = UserModel.fromJson(updatedUserData);
         debugPrint("Token: ${userModel!.token}");
@@ -171,17 +212,50 @@ class AuthController extends GetxController {
     return null;
   }
 
-  Stream<List<UserModel>> getUsersStream() {
-    return _usersCollection.snapshots().map((querySnapshot) {
-      List<UserModel> users = [];
-      for (var documentSnapshot in querySnapshot.docs) {
-        UserModel user = UserModel.fromJson(documentSnapshot.data());
-        users.add(user);
-      }
-      return users;
-    });
+  /// Fetches all users from the Firestore 'users' collection and returns them as a list of `UserModel`.
+  ///
+  /// This function asynchronously retrieves a snapshot of the 'users' collection from Firestore,
+  /// then maps each document snapshot to a `UserModel` using the model's `fromJson` factory method.
+  /// It finally returns a list of `UserModel` objects representing all users in the collection.
+  ///
+  /// Returns:
+  ///   A `Future<List<UserModel>>` that resolves to a list of `UserModel` instances representing all users.
+  ///
+  /// Example:
+  ///   To fetch all users and handle them in your application, you can use:
+  ///   ```dart
+  ///   getUsers().then((users) {
+  ///     for (var user in users) {
+  ///       print(user.name); // Assuming UserModel has a name field
+  ///     }
+  ///   });
+  ///   ```
+  Future<List<UserModel>> getUsers() async {
+    // Getting the snapshot of the 'users' collection
+    final snapshot = await _usersCollection.get();
+
+    // Mapping each document snapshot to a UserModel instance
+    final users = snapshot.docs.map((doc) {
+      // Extract data from each document snapshot
+      final data = doc.data();
+
+      // Create a UserModel from the data
+      return UserModel.fromJson(data);
+    }).toList(); // Convert the result to a List<UserModel>
+
+    // Return the list of user models
+    return users;
   }
 
+  /// Signs out the current user and navigates to the login screen.
+  ///
+  /// This method calls the underlying authentication provider's signOut method
+  /// to end the current user session. After successful sign out, it displays a
+  /// snackbar message and navigates to the login screen using `Get.offAllNamed`.
+  ///
+  /// If a FirebaseAuthException occurs during sign out, it is caught and passed
+  /// to the `exceptionError` function for handling. Any other exceptions are caught
+  /// and displayed in a snackbar message before being re-thrown.
   Future signOut() async {
     try {
       await _auth.signOut().then(
@@ -206,13 +280,18 @@ class AuthController extends GetxController {
     }
   }
 
+  /// Handles a Firebase exception by displaying a snackbar with the error code
+  /// and re-throws the exception for further handling.
+  ///
   void exceptionError({
     FirebaseException? exception,
   }) {
-    Get.snackbar(
-      "Error",
-      exception!.code,
-    );
-    throw Exception(exception.message);
+    if (exception != null) {
+      Get.snackbar(
+        "Error",
+        exception.code,
+      );
+      throw Exception(exception.message);
+    }
   }
 }

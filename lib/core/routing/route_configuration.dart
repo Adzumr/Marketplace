@@ -1,6 +1,6 @@
-import 'package:marketplace/views/screens/catalog_screens/user_home_screen.dart';
-import 'package:marketplace/views/screens/authentication/setting_screens/profile_screen.dart';
-import 'package:marketplace/views/screens/authentication/setting_screens/update_profile.dart';
+import 'package:marketplace/views/screens/request_screens/user_home_screen.dart';
+import 'package:marketplace/views/screens/profile_screens/profile_screen.dart';
+import 'package:marketplace/views/screens/profile_screens/update_profile.dart';
 import 'package:marketplace/views/screens/authentication/main_screen.dart';
 import 'package:marketplace/views/screens/authentication/register_customer_screen.dart';
 import 'package:get/get.dart';
@@ -10,8 +10,8 @@ import '../../views/screens/authentication/register_shopkeer__screen.dart';
 import '../../views/screens/authentication/intro_screen.dart';
 import '../../views/screens/authentication/login_screen.dart';
 import '../../views/screens/authentication/no_network_screen.dart';
-import '../../views/screens/catalog_screens/add_request_screen.dart';
-import '../../views/screens/catalog_screens/shopkeeper_home_screen.dart';
+import '../../views/screens/request_screens/add_request_screen.dart';
+import '../../views/screens/request_screens/shopkeeper_home_screen.dart';
 import 'route_names.dart';
 
 class AppRoutesConfiguration {
